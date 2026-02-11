@@ -1,0 +1,316 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Light mode - Professional .NET Developer Theme */
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+    
+    /* Primary: Blue-Purple gradient inspired by .NET and Visual Studio */
+    --primary: 258 90% 66%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    
+    --muted: 220 14% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    
+    --accent: 258 90% 66%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 258 90% 66%;
+    
+    --radius: 0.5rem;
+    
+    /* Additional colors for .NET theme */
+    --code-bg: 220 13% 95%;
+    --code-text: 258 90% 66%;
+  }
+
+  .dark {
+    /* Dark mode - Code Editor inspired theme */
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    
+    --card: 217.2 32.6% 17.5%;
+    --card-foreground: 210 40% 98%;
+    
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    
+    /* Primary: Vibrant purple-blue for dark mode */
+    --primary: 263 70% 65%;
+    --primary-foreground: 210 40% 98%;
+    
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    
+    --accent: 263 70% 65%;
+    --accent-foreground: 210 40% 98%;
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 263 70% 65%;
+    
+    /* Additional colors for dark mode */
+    --code-bg: 217.2 32.6% 12%;
+    --code-text: 263 70% 75%;
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Smooth transitions for theme switching */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--primary) / 0.3);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--primary) / 0.5);
+}
+
+/* Touch-friendly interactions */
+@media (hover: none) and (pointer: coarse) {
+  /* Increase touch target sizes on touch devices */
+  button,
+  a,
+  input,
+  textarea,
+  select {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Remove hover effects on touch devices */
+  .hover\:scale-110:hover {
+    transform: none;
+  }
+  
+  /* Use active states instead */
+  .active\:scale-95:active {
+    transform: scale(0.95);
+  }
+}
+
+/* Improve tap highlight color */
+* {
+  -webkit-tap-highlight-color: hsl(var(--primary) / 0.1);
+}
+
+/* Prevent text selection on interactive elements during touch */
+button,
+a {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Smooth scrolling for all browsers */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Improve focus visibility for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
+/* Performance optimizations for animations - Requirements: 9.5 */
+
+/* GPU acceleration for animated elements */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+.will-change-auto {
+  will-change: auto;
+}
+
+/* Enable hardware acceleration for common animated elements */
+[data-animated],
+.motion-div,
+.animated-card,
+.animated-button {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Optimize scroll performance */
+.scroll-container {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  /* Disable parallax effects */
+  [data-parallax] {
+    transform: none !important;
+  }
+}
+
+/* Optimize image rendering */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Optimize text rendering */
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Contain layout shifts */
+.contain-layout {
+  contain: layout;
+}
+
+.contain-paint {
+  contain: paint;
+}
+
+.contain-strict {
+  contain: strict;
+}
+
+/* Optimize animations with transform and opacity only */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Utility classes for performance */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.optimize-animations {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Remove will-change after animation completes */
+.animation-complete {
+  will-change: auto;
+}
+
+/* Optimize hover states */
+@media (hover: hover) and (pointer: fine) {
+  .hover-optimize:hover {
+    will-change: transform;
+  }
+  
+  .hover-optimize:not(:hover) {
+    will-change: auto;
+  }
+}
+
+/* Optimize for high refresh rate displays */
+@media (min-resolution: 120dpi) {
+  * {
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* Content visibility optimization for off-screen content */
+.lazy-content {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+/* Optimize repaints */
+.no-repaint {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Layer promotion for complex animations */
+.layer-promote {
+  transform: translateZ(0);
+  will-change: transform;
+  isolation: isolate;
+}

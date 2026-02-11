@@ -1,0 +1,150 @@
+// Example usage of dynamic import utilities
+// This file demonstrates how to use the utilities in lib/dynamic-imports.tsx
+
+import {
+  createDynamicComponent,
+  createLazyModal,
+  createRouteComponent,
+  preloadComponent,
+  prefetchComponents,
+  SectionLoadingSkeleton,
+  ComponentLoadingSkeleton,
+} from './dynamic-imports';
+
+// Example 1: Basic dynamic component with default loading
+const DynamicAboutSection = createDynamicComponent(
+  () => import('@/components/sections/About').then((mod) => ({ default: mod.About }))
+);
+
+// Example 2: Dynamic component with custom loading
+const DynamicProjectsSection = createDynamicComponent(
+  () => import('@/components/sections/Projects').then((mod) => ({ default: mod.Projects })),
+  {
+    loading: () => <div>Loading projects...</div>,
+    ssr: true,
+  }
+);
+
+// Example 3: Lazy modal (no SSR, no loading state)
+const DynamicProjectModal = createLazyModal(
+  () => import('@/components/shared/ProjectModal').then((mod) => ({ default: mod.ProjectModal }))
+);
+
+// Example 4: Route component with loading spinner
+// Note: This would be used if you had a blog page
+// const DynamicBlogPage = createRouteComponent(
+//   () => import('@/app/blog/page')
+// );
+
+// Example 5: Preload a component before it's needed
+function handleMouseEnter() {
+  // Preload the Projects section when user hovers over the navigation link
+  preloadComponent(
+    () => import('@/components/sections/Projects')
+  );
+}
+
+// Example 6: Prefetch multiple components in parallel
+function prefetchBelowTheFoldSections() {
+  prefetchComponents([
+    () => import('@/components/sections/About'),
+    () => import('@/components/sections/Experience'),
+    () => import('@/components/sections/Projects'),
+    () => import('@/components/sections/Skills'),
+    () => import('@/components/sections/Contact'),
+  ]);
+}
+
+// Example 7: Using in a component
+export function ExamplePage() {
+  return (
+    <div>
+      <h1>My Portfolio</h1>
+      
+      {/* This component will be loaded dynamically */}
+      <DynamicAboutSection 
+        bio="My bio"
+        education={{ university: "Example University", degree: "CS", years: "2020-2024" }}
+        goals="My goals"
+        contact={{ email: "test@example.com", phone: "123", location: "City" }}
+      />
+      
+      {/* This component will be loaded dynamically with custom loading */}
+      <DynamicProjectsSection projects={[]} />
+    </div>
+  );
+}
+
+// Example 8: Preload on mount
+import React from 'react';
+
+export function ExamplePageWithPreload() {
+  // Prefetch sections when component mounts
+  React.useEffect(() => {
+    prefetchBelowTheFoldSections();
+  }, []);
+
+  return (
+    <div>
+      <h1>My Portfolio</h1>
+      <DynamicAboutSection 
+        bio="My bio"
+        education={{ university: "Example University", degree: "CS", years: "2020-2024" }}
+        goals="My goals"
+        contact={{ email: "test@example.com", phone: "123", location: "City" }}
+      />
+    </div>
+  );
+}
+
+// Example 9: Conditional loading based on feature flag
+import { createConditionalComponent } from './dynamic-imports';
+
+const DynamicAnalytics = createConditionalComponent(
+  process.env.NEXT_PUBLIC_ENABLE_ANALYTICS === 'true',
+  () => import('@/components/Analytics'),
+  () => null // Fallback when analytics is disabled
+);
+
+// Example 10: Load heavy library only when needed
+import { loadHeavyLibrary } from './dynamic-imports';
+
+async function generatePDF() {
+  // Only load the PDF library when user clicks "Download PDF"
+  const jsPDF = await loadHeavyLibrary(() => import('jspdf'));
+  // Use jsPDF...
+}
+
+// Example 11: Using loading skeletons directly
+export function ExampleWithSkeleton() {
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  if (isLoading) {
+    return <SectionLoadingSkeleton />;
+  }
+
+  return <div>Content loaded!</div>;
+}
+
+// Example 12: Prefetch on hover (for better UX)
+export function NavigationWithPrefetch() {
+  return (
+    <nav>
+      <a 
+        href="#projects" 
+        onMouseEnter={() => preloadComponent(() => import('@/components/sections/Projects'))}
+      >
+        Projects
+      </a>
+      <a 
+        href="#contact" 
+        onMouseEnter={() => preloadComponent(() => import('@/components/sections/Contact'))}
+      >
+        Contact
+      </a>
+    </nav>
+  );
+}
+
+// Note: This is an example file and should not be imported in the actual application
+// It's here for documentation purposes only
