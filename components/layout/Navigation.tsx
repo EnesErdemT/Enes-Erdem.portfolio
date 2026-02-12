@@ -73,7 +73,7 @@ export function Navigation() {
             whileHover={{ scale: 1.05 }}
             onClick={(e) => handleNavClick(e, '#hero')}
           >
-            ETE
+            EE
           </motion.a>
 
           {/* Desktop Navigation */}
