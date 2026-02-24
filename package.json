@@ -16,7 +16,14 @@
     "analyze:browser": "ANALYZE=true BUNDLE_ANALYZE=browser next build",
     "update-domain": "node scripts/update-domain.js"
   },
-  "keywords": ["data science", "machine learning", "portfolio", "data engineering", "python", "sql"],
+  "keywords": [
+    "data science",
+    "machine learning",
+    "portfolio",
+    "data engineering",
+    "python",
+    "sql"
+  ],
   "author": "Enes Talha Erdem <enesterdem@gmail.com>",
   "license": "ISC",
   "description": "Personal portfolio website for Enes Talha Erdem - Data Science Specialist",
@@ -33,6 +40,7 @@
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-hook-form": "^7.69.0",
+    "resend": "^6.9.2",
     "tailwind-merge": "^3.4.0",
     "zod": "^4.2.1"
   },
